@@ -1,0 +1,41 @@
+{
+  "generated_at": "2026-07-05T12:00:00Z",
+  "pipeline": [
+    {
+      "sender": "info@framego.io",
+      "subject": "You signed: FRAMEGO SERVICE AGREEMENT.pdf",
+      "snippet": "All done! Everyone has now signed the document.",
+      "date": "24 Jun 2026"
+    },
+    {
+      "sender": "info@framego.io",
+      "subject": "You're Officially a FrameGo Creator! Welcome to the Community",
+      "snippet": "Congratulations on completing your onboarding — you're now an official member of the FrameGo global creative community.",
+      "date": "24 Jun 2026"
+    },
+    {
+      "sender": "juicymediabuisness@gmail.com",
+      "subject": "Brand Partnership & Affiliate Enquiry — Juicy Media Co. x Puressentiel",
+      "snippet": "Outreach sent — delivery failed (address not found).",
+      "date": "24 Jun 2026"
+    },
+    {
+      "sender": "juicymediabuisness@gmail.com",
+      "subject": "Brand Collaboration Enquiry – Juicy Media Co x ASOS",
+      "snippet": "Outreach sent — delivery failed (address not found).",
+      "date": "24 Jun 2026"
+    }
+  ],
+  "timeline": [],
+  "earnings": [
+    {
+      "sender": "message@adobe.com",
+      "subject": "Your payment failed",
+      "snippet": "Billing issue on your account — Visa card ending 8813 needs updating.",
+      "date": "22 Jun 2026"
+    }
+  ],
+  "stats": {
+    "total_business_emails": 5
+  }
+}
