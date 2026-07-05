@@ -1,0 +1,811 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>juicymedia.co — Ampvox Dashboard</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230A0A0A'/%3E%3Ctext x='16' y='22' font-family='Arial Black,sans-serif' font-size='13' font-weight='900' fill='%234ECDC4' text-anchor='middle' letter-spacing='0.5'%3EJUICY%3C/text%3E%3C/svg%3E">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --mint: #f40904;
+  --mint-light: rgba(244,9,4,0.08);
+  --mint-dark: #c90703;
+  --orange: #E8706A;
+  --orange-light: rgba(232,112,106,0.08);
+  --black: #0A0A0A;
+  --dark: #1A1A1A;
+  --mid: #2D2D2D;
+  --grey: #888888;
+  --white: #FFFFFF;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--black); color: var(--white); font-family: 'DM Sans', sans-serif; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+
+/* ═══ LOGIN ═══ */
+#login-screen {
+  position: fixed; inset: 0; z-index: 999; background: var(--black);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+#login-screen.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+.login-wordmark { font-family: 'Bebas Neue', sans-serif; font-size: clamp(56px, 10vw, 96px); letter-spacing: 4px; line-height: 1; color: var(--white); text-align: center; }
+.login-wordmark span { color: #f40904; }
+.login-tagline { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 6px; text-transform: uppercase; color: #444; margin-top: 12px; margin-bottom: 56px; text-align: center; }
+.login-rule { width: 32px; height: 2px; background: var(--mint); margin: 0 auto 56px; }
+.login-box { width: 380px; }
+.login-label { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 4px; text-transform: uppercase; color: #555; margin-bottom: 12px; display: block; }
+.login-input { width: 100%; background: var(--dark); border: none; border-bottom: 1px solid #2a2a2a; color: var(--white); font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 4px; padding: 14px 0; outline: none; transition: border-color 0.2s; margin-bottom: 32px; }
+.login-input:focus { border-bottom-color: var(--mint); }
+.login-btn { width: 100%; background: var(--mint); color: var(--black); border: none; font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 3px; padding: 18px; cursor: pointer; transition: background 0.2s; }
+.login-btn:hover { background: var(--mint-dark); }
+.login-error { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: #ff6b6b; text-align: center; margin-top: 16px; opacity: 0; transition: opacity 0.2s; }
+.login-error.show { opacity: 1; }
+
+/* ═══ NAV ═══ */
+.nav { position: sticky; top: 0; z-index: 100; background: var(--black); border-bottom: 1px solid rgba(78,205,196,0.15); display: flex; align-items: center; justify-content: space-between; padding: 0 48px; height: 60px; }
+.nav-logo { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 2px; }
+.nav-logo span { color: #4ECDC4; }
+.nav-meta { display: flex; align-items: center; gap: 32px; }
+.nav-user { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--grey); }
+.nav-user strong { color: var(--mint); }
+.nav-logout { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: #444; cursor: pointer; border: none; background: none; transition: color 0.2s; }
+.nav-logout:hover { color: var(--mint); }
+
+/* ═══ TICKER ═══ */
+.ticker { background: var(--mint); padding: 10px 0; overflow: hidden; white-space: nowrap; }
+.ticker-inner { display: inline-block; animation: tick 35s linear infinite; }
+.ticker-item { display: inline-block; font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--black); padding: 0 24px; }
+.ticker-sep { display: inline-block; width: 4px; height: 4px; background: var(--black); border-radius: 50%; vertical-align: middle; opacity: 0.4; }
+@keyframes tick { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+
+/* ═══ HERO ═══ */
+.hero { padding: 60px 48px 48px; display: flex; align-items: flex-end; justify-content: space-between; gap: 40px; }
+.hero-eyebrow { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--mint); margin-bottom: 16px; }
+.hero-name { font-family: 'Bebas Neue', sans-serif; font-size: clamp(52px, 7vw, 88px); line-height: 0.9; letter-spacing: 1px; }
+.hero-name span { color: #f40904; }
+.hero-rule { width: 48px; height: 3px; background: var(--orange); margin: 28px 0 20px; }
+.hero-desc { font-size: 14px; font-weight: 300; color: var(--grey); max-width: 460px; line-height: 1.75; }
+.hero-handle { font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 2px; color: var(--mint); margin-top: 16px; }
+.hero-date { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: #333; text-align: right; line-height: 2; }
+
+/* ═══ SERVICES ROW ═══ */
+.services-row { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid rgba(78,205,196,0.1); border-bottom: 1px solid rgba(78,205,196,0.1); }
+.service-block { padding: 28px 40px; border-right: 1px solid rgba(78,205,196,0.08); position: relative; overflow: hidden; }
+.service-block:last-child { border-right: none; }
+.service-block::after { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 0; background: var(--mint); transition: height 0.4s ease; }
+.service-block:hover::after { height: 100%; }
+.service-name { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 2px; color: var(--mint); margin-bottom: 6px; }
+.service-sub { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: #444; margin-bottom: 14px; }
+.service-rate { font-family: 'Bebas Neue', sans-serif; font-size: 36px; letter-spacing: 1px; color: var(--white); line-height: 1; }
+.service-rate-note { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: #555; margin-top: 6px; }
+
+/* ═══ STATS ROW ═══ */
+.stats-row { display: grid; grid-template-columns: repeat(4, 1fr); border-bottom: 1px solid rgba(78,205,196,0.1); }
+.stat-block { padding: 32px 40px; border-right: 1px solid rgba(78,205,196,0.1); position: relative; overflow: hidden; }
+.stat-block:last-child { border-right: none; }
+.stat-block::after { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 0; background: var(--orange); transition: height 0.4s ease; }
+.stat-block:hover::after { height: 100%; }
+.stat-label { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 4px; text-transform: uppercase; color: var(--grey); margin-bottom: 12px; }
+.stat-value { font-family: 'Bebas Neue', sans-serif; font-size: 52px; letter-spacing: 1px; line-height: 1; color: var(--white); }
+.stat-value.mint { color: var(--mint); }
+.stat-value.orange { color: var(--orange); }
+.stat-sub { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: #555; margin-top: 8px; }
+
+/* ═══ SECTION ═══ */
+.section { padding: 48px; }
+.section + .section { border-top: 1px solid rgba(255,255,255,0.04); }
+.section-label { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 4px; text-transform: uppercase; color: var(--mint); margin-bottom: 8px; }
+.section-title { font-family: 'Bebas Neue', sans-serif; font-size: 36px; letter-spacing: 1px; margin-bottom: 32px; }
+
+/* ═══ PIPELINE GRID ═══ */
+.pipeline-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 2px; }
+.deal-card { background: var(--dark); padding: 28px; min-height: 220px; display: flex; flex-direction: column; justify-content: space-between; border-top: 2px solid rgba(78,205,196,0.3); }
+.deal-card.status-live    { border-top-color: var(--mint); }
+.deal-card.status-pending { border-top-color: var(--orange); }
+.deal-card.status-dead    { border-top-color: #333; opacity: 0.6; }
+.deal-card.status-prospect { border-top-color: #333; opacity: 0.72; }
+.deal-top { display: flex; justify-content: space-between; gap: 18px; align-items: flex-start; margin-bottom: 20px; }
+.deal-brand { font-family: 'Bebas Neue', sans-serif; font-size: 28px; line-height: 1; letter-spacing: 1px; }
+.deal-status-pill { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: var(--black); background: var(--mint); padding: 6px 8px; white-space: nowrap; }
+.deal-card.status-pending .deal-status-pill { background: var(--orange); }
+.deal-card.status-dead    .deal-status-pill { background: #333; color: #666; }
+.deal-card.status-prospect .deal-status-pill { background: #333; color: #666; }
+.deal-meta { display: grid; gap: 12px; margin-bottom: 20px; }
+.deal-label { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 3px; text-transform: uppercase; color: #444; margin-bottom: 4px; }
+.deal-value { font-size: 13px; line-height: 1.65; color: #bdbdbd; }
+.deal-money { font-family: 'Bebas Neue', sans-serif; font-size: 42px; line-height: 1; color: var(--mint); letter-spacing: 1px; }
+.deal-card.status-pending .deal-money { color: var(--orange); }
+.deal-note { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 2px; line-height: 2; text-transform: uppercase; color: #555; }
+
+/* ═══ TIMELINE ═══ */
+.timeline-list { border-top: 1px solid rgba(255,255,255,0.04); }
+.timeline-item { display: grid; grid-template-columns: 150px 1fr auto; gap: 28px; align-items: center; padding: 24px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+.timeline-date { font-family: 'Bebas Neue', sans-serif; font-size: 30px; color: var(--mint); line-height: 0.95; }
+.timeline-date span { display: block; font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 3px; color: #444; margin-top: 8px; }
+.timeline-date.urgent { color: var(--orange); }
+.timeline-title { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+.timeline-desc { font-size: 13px; color: #888; line-height: 1.7; }
+.timeline-pill { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: #777; border: 1px solid #333; padding: 8px 10px; white-space: nowrap; }
+.timeline-pill.active { border-color: rgba(244,9,4,0.4); color: var(--mint); }
+.timeline-pill.urgent { border-color: rgba(232,112,106,0.4); color: var(--orange); }
+
+/* ═══ EARNINGS ═══ */
+.earnings-table { border-top: 1px solid rgba(255,255,255,0.04); }
+.earning-row { display: grid; grid-template-columns: 1.4fr 0.8fr 0.8fr 1fr; gap: 24px; align-items: center; padding: 22px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+.earning-head { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 3px; text-transform: uppercase; color: #444; }
+.earning-brand { font-weight: 700; font-size: 14px; }
+.earning-detail { font-size: 12px; color: #777; margin-top: 5px; line-height: 1.6; }
+.earning-amount { font-family: 'Bebas Neue', sans-serif; font-size: 32px; color: var(--mint); }
+.earning-status-paid     { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--mint); }
+.earning-status-invoiced { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--orange); }
+.earning-status-pending  { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: #444; }
+
+/* ═══ ACTION ITEMS ═══ */
+.action-list { display: flex; flex-direction: column; gap: 2px; }
+.action-item { display: grid; grid-template-columns: 56px 1fr auto; gap: 0; background: var(--dark); overflow: hidden; border-left: 3px solid transparent; transition: border-color 0.2s; }
+.action-item:hover { border-left-color: var(--mint); }
+.action-num { display: flex; align-items: center; justify-content: center; font-family: 'Bebas Neue', sans-serif; font-size: 28px; color: rgba(255,255,255,0.15); border-right: 1px solid rgba(255,255,255,0.04); transition: color 0.2s; }
+.action-item:hover .action-num { color: var(--mint); }
+.action-body { padding: 16px 20px; }
+.action-title { font-family: 'Bebas Neue', sans-serif; font-size: 17px; letter-spacing: 0.5px; color: var(--white); margin-bottom: 5px; }
+.action-detail { font-size: 12.5px; color: var(--grey); line-height: 1.6; }
+.action-tag-col { display: flex; align-items: center; padding: 0 20px; }
+.action-tag { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 2px; text-transform: uppercase; padding: 4px 10px; border: 1px solid; white-space: nowrap; }
+.tag-urgent  { color: #ff6b6b;       border-color: rgba(255,107,107,0.3); background: rgba(255,107,107,0.05); }
+.tag-quick   { color: var(--mint);   border-color: rgba(244,9,4,0.3);  background: rgba(244,9,4,0.05); }
+.tag-build   { color: #f40904;       border-color: rgba(244,9,4,0.3); background: rgba(244,9,4,0.05); }
+.tag-outreach{ color: var(--orange); border-color: rgba(232,112,106,0.3);   background: rgba(232,112,106,0.05); }
+.tag-ai      { color: #C084FC;       border-color: rgba(192,132,252,0.3); background: rgba(192,132,252,0.05); }
+.tag-admin   { color: #555;          border-color: #333;                  background: transparent; }
+
+/* ═══ UPDATES ═══ */
+.update-item { display: grid; grid-template-columns: 160px 1fr; gap: 32px; padding: 28px 0; border-bottom: 1px solid rgba(255,255,255,0.04); align-items: start; }
+.update-item:first-child { border-top: 1px solid rgba(255,255,255,0.04); }
+.update-date { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--mint); margin-bottom: 6px; }
+.update-tag { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: #333; }
+.update-text { font-size: 14px; color: #bbb; line-height: 1.85; }
+
+/* ═══ EQUIPMENT WISHLIST ═══ */
+.wish-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 2px; }
+.wish-card { background: var(--dark); padding: 22px 24px; border-top: 2px solid #222; transition: border-top-color 0.2s; }
+.wish-card:hover { border-top-color: var(--mint); }
+.wish-card.priority-high    { border-top-color: var(--orange); }
+.wish-card.priority-urgent  { border-top-color: #ff6b6b; }
+.wish-icon { font-family: 'Bebas Neue', sans-serif; font-size: 22px; color: var(--mint); letter-spacing: 1px; margin-bottom: 10px; }
+.wish-name { font-weight: 700; font-size: 14px; color: var(--white); margin-bottom: 5px; }
+.wish-note { font-size: 12px; color: #666; line-height: 1.55; }
+.wish-priority { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 2px; text-transform: uppercase; margin-top: 10px; }
+.wish-card.priority-urgent  .wish-priority { color: #ff6b6b; }
+.wish-card.priority-high    .wish-priority { color: var(--orange); }
+.wish-card .wish-priority { color: #555; }
+
+/* ═══ EMPTY STATE ═══ */
+.empty-state { border: 1px dashed rgba(78,205,196,0.12); padding: 64px 40px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 14px; }
+.empty-glyph { font-family: 'Bebas Neue', sans-serif; font-size: 40px; color: #1f1f1f; letter-spacing: 2px; }
+.empty-title { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 1px; color: #2d2d2d; }
+.empty-desc { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: #2a2a2a; line-height: 2.2; }
+
+/* ═══ FOOTER ═══ */
+.dash-footer { padding: 24px 48px; border-top: 1px solid rgba(78,205,196,0.08); display: flex; justify-content: space-between; align-items: center; margin-top: 40px; }
+.footer-logo { font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 2px; color: #222; }
+.footer-logo span { color: rgba(78,205,196,0.3); }
+.footer-meta { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: #222; }
+
+/* ═══ ANIMATIONS ═══ */
+@keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+.dashboard { animation: fadeUp 0.5s ease both; }
+
+/* ═══ RESPONSIVE ═══ */
+@media(max-width:900px) {
+  .services-row { grid-template-columns: 1fr; }
+  .stats-row { grid-template-columns: 1fr 1fr; }
+  .stat-block { border-right: none; border-bottom: 1px solid rgba(78,205,196,0.1); }
+  .hero { flex-direction: column; align-items: flex-start; }
+  .timeline-item, .earning-row { grid-template-columns: 1fr; gap: 10px; align-items: start; }
+  .action-item { grid-template-columns: 40px 1fr; }
+  .action-tag-col { display: none; }
+  .nav { padding: 0 20px; }
+  .section { padding: 32px 20px; }
+  .stat-block { padding: 24px 20px; }
+}
+@media(max-width:600px) {
+  .stats-row { grid-template-columns: 1fr; }
+  .hero { padding: 32px 20px; }
+  .update-item { grid-template-columns: 1fr; gap: 8px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ LOGIN ═══ -->
+<div id="login-screen">
+  <div class="login-wordmark">JUICY<span>MEDIA</span></div>
+  <div class="login-tagline">Content Creation &amp; Branding</div>
+  <div class="login-rule"></div>
+  <div class="login-box">
+    <label class="login-label" for="pw-input">Access Code</label>
+    <input class="login-input" type="password" id="pw-input" placeholder="••••••" autocomplete="off">
+    <button class="login-btn" onclick="tryLogin()">ENTER DASHBOARD</button>
+    <div class="login-error" id="login-error">Incorrect access code. Try again.</div>
+  </div>
+</div>
+
+<!-- ═══ DASHBOARD ═══ -->
+<div id="dashboard" class="dashboard" style="display:none;">
+
+  <nav class="nav">
+    <div class="nav-logo">AMP<span>VOX</span></div>
+    <div class="nav-meta">
+      <div class="nav-user">Viewing as <strong>juicymedia.co</strong></div>
+      <button class="nav-logout" onclick="logout()">LOG OUT</button>
+    </div>
+  </nav>
+
+  <div class="ticker">
+    <div class="ticker-inner">
+      <span class="ticker-item">juicymedia.co</span><span class="ticker-sep"></span>
+      <span class="ticker-item">Managed by Ampvox</span><span class="ticker-sep"></span>
+      <span class="ticker-item">Music Industry Content Creation</span><span class="ticker-sep"></span>
+      <span class="ticker-item">Photography &amp; Videography</span><span class="ticker-sep"></span>
+      <span class="ticker-item">Branding &amp; Creative Direction</span><span class="ticker-sep"></span>
+      <span class="ticker-item">Based in London</span><span class="ticker-sep"></span>
+      <span class="ticker-item">@juicymedia.co on Instagram</span><span class="ticker-sep"></span>
+      <span class="ticker-item">54 Posts · Growing Portfolio</span><span class="ticker-sep"></span>
+      <span class="ticker-item">Mayfair Venue Outreach — In Progress</span><span class="ticker-sep"></span>
+      <span class="ticker-item">Casa Frequency — Decision Pending</span><span class="ticker-sep"></span>
+      <span class="ticker-item">Napapijri — Coming Soon via Ampvox</span><span class="ticker-sep"></span>
+      <span class="ticker-item">juicymedia.co</span><span class="ticker-sep"></span>
+      <span class="ticker-item">Managed by Ampvox</span><span class="ticker-sep"></span>
+      <span class="ticker-item">Music Industry Content Creation</span><span class="ticker-sep"></span>
+      <span class="ticker-item">Photography &amp; Videography</span><span class="ticker-sep"></span>
+      <span class="ticker-item">Branding &amp; Creative Direction</span><span class="ticker-sep"></span>
+      <span class="ticker-item">Based in London</span><span class="ticker-sep"></span>
+      <span class="ticker-item">@juicymedia.co on Instagram</span><span class="ticker-sep"></span>
+      <span class="ticker-item">54 Posts · Growing Portfolio</span><span class="ticker-sep"></span>
+      <span class="ticker-item">Mayfair Venue Outreach — In Progress</span><span class="ticker-sep"></span>
+      <span class="ticker-item">Casa Frequency — Decision Pending</span><span class="ticker-sep"></span>
+      <span class="ticker-item">Napapijri — Coming Soon via Ampvox</span><span class="ticker-sep"></span>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div>
+      <div class="hero-eyebrow">Your Business Dashboard</div>
+      <div class="hero-name">JUICY<br><span>MEDIA</span></div>
+      <div class="hero-rule"></div>
+      <div class="hero-desc">Music industry photographer and videographer specialising in artists, live events, and brand content. Based in London. Managed by Ampvox. This is your central hub for clients, bookings, revenue, and everything your business needs to grow.</div>
+      <div class="hero-handle">@juicymedia.co &nbsp;·&nbsp; juicymedia.co &nbsp;·&nbsp; Music · Photography · Videography · Branding</div>
+    </div>
+    <div class="hero-date" id="dash-date"></div>
+  </div>
+
+  <!-- SERVICES -->
+  <div class="services-row">
+    <div class="service-block">
+      <div class="service-name">Photo Shoot</div>
+      <div class="service-sub">Artists · Events · Headshots</div>
+      <div class="service-rate">£100<span style="font-size:20px;color:#555;">/hr</span></div>
+      <div class="service-rate-note">Includes editing + content delivery</div>
+    </div>
+    <div class="service-block">
+      <div class="service-name">Event Coverage</div>
+      <div class="service-sub">Photo + Video · Music Venues</div>
+      <div class="service-rate">£250<span style="font-size:20px;color:#555;">min</span></div>
+      <div class="service-rate-note">2-person weekend minimum — non-negotiable</div>
+    </div>
+    <div class="service-block">
+      <div class="service-name">Brand Package</div>
+      <div class="service-sub">Venues · Promoters · Labels</div>
+      <div class="service-rate">TBD</div>
+      <div class="service-rate-note">Retainer and package rates in development</div>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-row">
+    <div class="stat-block">
+      <div class="stat-label">Active Clients</div>
+      <div class="stat-value mint">0</div>
+      <div class="stat-sub">Outreach starting now</div>
+    </div>
+    <div class="stat-block">
+      <div class="stat-label">Bookings — 2026</div>
+      <div class="stat-value">0</div>
+      <div class="stat-sub">Building pipeline</div>
+    </div>
+    <div class="stat-block">
+      <div class="stat-label">Deals in Discussion</div>
+      <div class="stat-value orange">1</div>
+      <div class="stat-sub">Casa Frequency — awaiting response</div>
+    </div>
+    <div class="stat-block">
+      <div class="stat-label">Revenue — 2026</div>
+      <div class="stat-value">£0</div>
+      <div class="stat-sub">Just joined Ampvox</div>
+    </div>
+  </div>
+
+  <!-- CLIENT PIPELINE -->
+  <div class="section">
+    <div class="section-label">01 — Client Pipeline</div>
+    <div class="section-title">WHERE THINGS STAND.</div>
+    <div class="pipeline-grid">
+
+      <div class="deal-card status-pending">
+        <div>
+          <div class="deal-top">
+            <div class="deal-brand">Casa Frequency</div>
+            <div class="deal-status-pill">Decision Pending</div>
+          </div>
+          <div class="deal-meta">
+            <div>
+              <div class="deal-label">Situation</div>
+              <div class="deal-value">Promotions company running events at Glasshouse (26 Jun), July 4th, and Casa Frequency (31 Jul). They want content but are dodging the payment conversation.</div>
+            </div>
+            <div>
+              <div class="deal-label">Next Step</div>
+              <div class="deal-value">Send one final direct message asking for their content budget. If no answer: pull out. Tony DJ's independently — he either finds his own way or pays separately for his set.</div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="deal-money">TBC</div>
+          <div class="deal-note">Min £250 for 2 people · or walk</div>
+        </div>
+      </div>
+
+      <div class="deal-card status-prospect">
+        <div>
+          <div class="deal-top">
+            <div class="deal-brand">Selene (Mayfair)</div>
+            <div class="deal-status-pill">Warm Intro Soon</div>
+          </div>
+          <div class="deal-meta">
+            <div>
+              <div class="deal-label">Opportunity</div>
+              <div class="deal-value">High-profile Mayfair club. Filming allowed. Blair has the direct number of the Director. Major artists perform regularly.</div>
+            </div>
+            <div>
+              <div class="deal-label">Next Step</div>
+              <div class="deal-value">Website and media kit must be live first. Then Blair makes the warm intro. Target: regular content partner at premium rate.</div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="deal-money" style="color:#555;">Premium</div>
+          <div class="deal-note">After website is live</div>
+        </div>
+      </div>
+
+      <div class="deal-card status-prospect">
+        <div>
+          <div class="deal-top">
+            <div class="deal-brand">Tape (Mayfair)</div>
+            <div class="deal-status-pill">Prospect</div>
+          </div>
+          <div class="deal-meta">
+            <div>
+              <div class="deal-label">Opportunity</div>
+              <div class="deal-value">Flagship Mayfair venue. No filming for general guests — media access negotiable. Love Island regulars, 50 Cent, Travis Scott, Sexyy Red have all appeared.</div>
+            </div>
+            <div>
+              <div class="deal-label">Next Step</div>
+              <div class="deal-value">Approach via pitch deck once website is live. Negotiate media accreditation as venue content creator.</div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="deal-money" style="color:#555;">Negotiate</div>
+          <div class="deal-note">Media access required</div>
+        </div>
+      </div>
+
+      <div class="deal-card status-prospect">
+        <div>
+          <div class="deal-top">
+            <div class="deal-brand">Cirque (Mayfair)</div>
+            <div class="deal-status-pill">Prospect</div>
+          </div>
+          <div class="deal-meta">
+            <div>
+              <div class="deal-label">Opportunity</div>
+              <div class="deal-value">Strong theatrical / circus aesthetic. Great visual content potential. Blair connected. Filming allowed.</div>
+            </div>
+            <div>
+              <div class="deal-label">Next Step</div>
+              <div class="deal-value">Approach alongside Selene once website and pitch deck are ready.</div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="deal-money" style="color:#555;">TBC</div>
+          <div class="deal-note">Post website launch</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- TIMELINE -->
+  <div class="section">
+    <div class="section-label">02 — Upcoming &amp; Key Dates</div>
+    <div class="section-title">WHAT'S MOVING.</div>
+    <div class="timeline-list">
+
+      <div class="timeline-item">
+        <div class="timeline-date urgent">NOW<span>URGENT</span></div>
+        <div>
+          <div class="timeline-title">Buy Two Secondhand Hard Drives</div>
+          <div class="timeline-desc">No storage = no Photoshop. This is blocking editing work right now. Get two 1TB drives (plan A + plan B). Secondhand is fine. Do this week.</div>
+        </div>
+        <div class="timeline-pill urgent">Blocking</div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-date urgent">NOW<span>THIS WEEK</span></div>
+        <div>
+          <div class="timeline-title">Fix Instagram Bio &amp; Broken Link</div>
+          <div class="timeline-desc">Update age (24), replace broken TikTok link with a booking CTA, move music industry niche to line 1. Takes 5 minutes. Do it today.</div>
+        </div>
+        <div class="timeline-pill urgent">Quick Win</div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-date">26 JUN<span>2026</span></div>
+        <div>
+          <div class="timeline-title">Casa Frequency — Glasshouse Event</div>
+          <div class="timeline-desc">First Casa event. Decision needed before this date: get a budget confirmation or pull out. Don't turn up unpaid.</div>
+        </div>
+        <div class="timeline-pill urgent">Needs Decision</div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-date">4 JUL<span>2026</span></div>
+        <div>
+          <div class="timeline-title">Casa Frequency — July Event</div>
+          <div class="timeline-desc">J-Line and DJ Antics walkthrough video. Payment confirmed or not attending. Tony handles his own travel if no deal.</div>
+        </div>
+        <div class="timeline-pill">TBC</div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-date">31 JUL<span>2026</span></div>
+        <div>
+          <div class="timeline-title">Casa Frequency — Main Event</div>
+          <div class="timeline-desc">J-Line headlining. Highest-profile of the three dates. Maximum leverage to negotiate.</div>
+        </div>
+        <div class="timeline-pill">TBC</div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-date">TBC<span>SOON</span></div>
+        <div>
+          <div class="timeline-title">Website Launch</div>
+          <div class="timeline-desc">Portfolio site built by Blair once assets are shared. Unlocks Mayfair venue pitches and justifies premium pricing.</div>
+        </div>
+        <div class="timeline-pill active">In Progress</div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-date">TBC<span>FESTIVAL SEASON</span></div>
+        <div>
+          <div class="timeline-title">Brighton Pride — Media Pass</div>
+          <div class="timeline-desc">Applied for media accreditation. Mariah Carey, Paris Hilton headlining. If this comes through it's a major portfolio piece.</div>
+        </div>
+        <div class="timeline-pill">Awaiting Response</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- EARNINGS -->
+  <div class="section">
+    <div class="section-label">03 — Earnings Tracker</div>
+    <div class="section-title">THE NUMBERS.</div>
+    <div class="earnings-table">
+      <div class="earning-row earning-head">
+        <div>Job</div>
+        <div>Amount</div>
+        <div>Status</div>
+        <div>Notes</div>
+      </div>
+    </div>
+    <div class="empty-state" style="margin-top:2px;">
+      <div class="empty-glyph">£—</div>
+      <div class="empty-title">No Paid Jobs Yet</div>
+      <div class="empty-desc">First bookings will appear here. Outreach starts now.</div>
+    </div>
+  </div>
+
+  <!-- ACTION ITEMS -->
+  <div class="section">
+    <div class="section-label">04 — Priority Actions</div>
+    <div class="section-title">YOUR TO-DO LIST.</div>
+    <div class="action-list">
+
+      <div class="action-item">
+        <div class="action-num">1</div>
+        <div class="action-body">
+          <div class="action-title">Buy Two Secondhand Hard Drives</div>
+          <div class="action-detail">Blocking Photoshop right now. 1TB each, secondhand is fine. Do this week — everything else in editing depends on it.</div>
+        </div>
+        <div class="action-tag-col"><span class="action-tag tag-urgent">Blocking</span></div>
+      </div>
+
+      <div class="action-item">
+        <div class="action-num">2</div>
+        <div class="action-body">
+          <div class="action-title">Fix Instagram Bio</div>
+          <div class="action-detail">Update age to 24. Replace broken link with booking CTA. Move music industry niche to line 1. Add Story Highlights: Portfolio, Packages, Testimonials, BTS.</div>
+        </div>
+        <div class="action-tag-col"><span class="action-tag tag-quick">Quick Win</span></div>
+      </div>
+
+      <div class="action-item">
+        <div class="action-num">3</div>
+        <div class="action-body">
+          <div class="action-title">Resolve Casa Frequency</div>
+          <div class="action-detail">One final message: "What's your content budget per event?" If no answer: pull out. Don't attend another unpaid weekend event.</div>
+        </div>
+        <div class="action-tag-col"><span class="action-tag tag-urgent">Urgent</span></div>
+      </div>
+
+      <div class="action-item">
+        <div class="action-num">4</div>
+        <div class="action-body">
+          <div class="action-title">Send Blair Your Metrics Screenshot</div>
+          <div class="action-detail">Instagram + TikTok stats screenshot. Blair uses this to build the automated outreach prompt that sends 500 emails a week for you.</div>
+        </div>
+        <div class="action-tag-col"><span class="action-tag tag-ai">AI Outreach</span></div>
+      </div>
+
+      <div class="action-item">
+        <div class="action-num">5</div>
+        <div class="action-body">
+          <div class="action-title">Share Assets with Blair for Website Build</div>
+          <div class="action-detail">Best photos, video links, any existing copy. Blair builds the portfolio site once she has the material. Site unlocks the Mayfair pitch.</div>
+        </div>
+        <div class="action-tag-col"><span class="action-tag tag-build">Build</span></div>
+      </div>
+
+      <div class="action-item">
+        <div class="action-num">6</div>
+        <div class="action-body">
+          <div class="action-title">Book Photoshop Day with French</div>
+          <div class="action-detail">Blair reaching out to arrange. Shadow French for a day. Ask questions as he works. Better than any YouTube tutorial for this.</div>
+        </div>
+        <div class="action-tag-col"><span class="action-tag tag-build">Skills</span></div>
+      </div>
+
+      <div class="action-item">
+        <div class="action-num">7</div>
+        <div class="action-body">
+          <div class="action-title">Reach Out to Adobe for Free Subscription</div>
+          <div class="action-detail">Easiest brand deal on the list. No physical product. Offer to tag in content and write a case study. Blair drafting the pitch.</div>
+        </div>
+        <div class="action-tag-col"><span class="action-tag tag-outreach">Outreach</span></div>
+      </div>
+
+      <div class="action-item">
+        <div class="action-num">8</div>
+        <div class="action-body">
+          <div class="action-title">Sign Up for Claude Pro</div>
+          <div class="action-detail">£15/month. Unlocks computer-use automation. 500 outreach emails a week, written and drafted by AI, no copy-pasting.</div>
+        </div>
+        <div class="action-tag-col"><span class="action-tag tag-ai">AI</span></div>
+      </div>
+
+      <div class="action-item">
+        <div class="action-num">9</div>
+        <div class="action-body">
+          <div class="action-title">Start Posting on LinkedIn</div>
+          <div class="action-detail">Untapped B2B channel for venue and event brand clients. Even repurposing Instagram content is a start. Blair to advise on angle.</div>
+        </div>
+        <div class="action-tag-col"><span class="action-tag tag-outreach">Content</span></div>
+      </div>
+
+      <div class="action-item">
+        <div class="action-num">10</div>
+        <div class="action-body">
+          <div class="action-title">Mayfair Warm Intro — Selene Director</div>
+          <div class="action-detail">Blair has the director's direct number. Intro happens after website is live. Do not approach before — first impressions at this level matter.</div>
+        </div>
+        <div class="action-tag-col"><span class="action-tag tag-outreach">Networking</span></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- EQUIPMENT WISHLIST -->
+  <div class="section">
+    <div class="section-label">05 — Equipment &amp; Tools</div>
+    <div class="section-title">THE WISHLIST.</div>
+    <p style="font-size:13px;color:var(--grey);margin-bottom:24px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;line-height:2;">Approach with brand outreach first — sponsored loans, product placement, free trials — before buying anything.</p>
+    <div class="wish-grid">
+
+      <div class="wish-card priority-urgent">
+        <div class="wish-icon">HDD</div>
+        <div class="wish-name">Hard Drive ×2</div>
+        <div class="wish-note">1TB each. Secondhand fine. Blocking Photoshop right now — buy this week.</div>
+        <div class="wish-priority">🔴 Blocking — Do Now</div>
+      </div>
+
+      <div class="wish-card priority-high">
+        <div class="wish-icon">LENS</div>
+        <div class="wish-name">Upgrade Lens</div>
+        <div class="wish-note">Finance via Sean once camera loan finishes (1 month). High priority for quality step-up.</div>
+        <div class="wish-priority">🟠 High Priority</div>
+      </div>
+
+      <div class="wish-card priority-high">
+        <div class="wish-icon">CAM2</div>
+        <div class="wish-name">Second Camera</div>
+        <div class="wish-note">Essential for events — backup body + simultaneous second angle.</div>
+        <div class="wish-priority">🟠 High Priority</div>
+      </div>
+
+      <div class="wish-card priority-high">
+        <div class="wish-icon">MBP</div>
+        <div class="wish-name">MacBook</div>
+        <div class="wish-note">Needed for a proper editing workflow. Current setup limits what's possible in post.</div>
+        <div class="wish-priority">🟠 High Priority</div>
+      </div>
+
+      <div class="wish-card">
+        <div class="wish-icon">AI</div>
+        <div class="wish-name">Adobe CC</div>
+        <div class="wish-note">Already have access. Reach out to Adobe for a free/discounted deal in exchange for product placement and case study.</div>
+        <div class="wish-priority">Easiest Brand Deal</div>
+      </div>
+
+      <div class="wish-card">
+        <div class="wish-icon">AUD</div>
+        <div class="wish-name">Audio Extractor</div>
+        <div class="wish-note">Improves event video quality significantly. Try brand outreach before purchasing.</div>
+        <div class="wish-priority">Medium Priority</div>
+      </div>
+
+      <div class="wish-card">
+        <div class="wish-icon">SCR</div>
+        <div class="wish-name">Camera Screen</div>
+        <div class="wish-note">Flip monitor that attaches to camera. Helpful for solo shooting setups.</div>
+        <div class="wish-priority">Medium Priority</div>
+      </div>
+
+      <div class="wish-card">
+        <div class="wish-icon">DJI</div>
+        <div class="wish-name">DJI Osmo Pocket 3</div>
+        <div class="wish-note">Compact, gimbal-stabilised. Excellent for B-roll and event coverage. Reach out to DJI.</div>
+        <div class="wish-priority">Medium Priority</div>
+      </div>
+
+      <div class="wish-card">
+        <div class="wish-icon">BAG</div>
+        <div class="wish-name">Bags &amp; Cases</div>
+        <div class="wish-note">Professional kit transport. Looks the part when showing up to premium venues.</div>
+        <div class="wish-priority">Medium Priority</div>
+      </div>
+
+      <div class="wish-card">
+        <div class="wish-icon">BAT</div>
+        <div class="wish-name">Battery Pack</div>
+        <div class="wish-note">Standard event kit. Never miss a shot to a dead camera.</div>
+        <div class="wish-priority">Medium Priority</div>
+      </div>
+
+      <div class="wish-card">
+        <div class="wish-icon">META</div>
+        <div class="wish-name">Ray-Ban Meta Glasses</div>
+        <div class="wish-note">Hands-free capture. Good for BTS and POV content at events.</div>
+        <div class="wish-priority">Nice to Have</div>
+      </div>
+
+      <div class="wish-card">
+        <div class="wish-icon">CHAIR</div>
+        <div class="wish-name">Desk Chair</div>
+        <div class="wish-note">Health and ergonomics for long editing sessions. Worth sorting properly.</div>
+        <div class="wish-priority">Nice to Have</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MANAGER UPDATES -->
+  <div class="section">
+    <div class="section-label">06 — Manager Updates</div>
+    <div class="section-title">FROM YOUR TEAM.</div>
+
+    <div class="update-item">
+      <div>
+        <div class="update-date" id="update-date-1"></div>
+        <div class="update-tag">Casa Frequency</div>
+      </div>
+      <div class="update-text">
+        You've followed up twice on payment. They re-sent the same message ignoring your budget question — classic stall tactic. You need to send one final direct ask and then pull out if there's no answer. You hold the content AND the DJ relationship. It's a lose-lose for them if they don't pay up. Two years of free work is enough.
+      </div>
+    </div>
+
+    <div class="update-item">
+      <div>
+        <div class="update-date" id="update-date-2"></div>
+        <div class="update-tag">Mayfair Strategy</div>
+      </div>
+      <div class="update-text">
+        Blair has personal connections at Selene (direct line to the Director), Tape, and Cirque. These are premium rate opportunities — artists like Travis Scott, 50 Cent, and Sexyy Red perform here regularly. Website needs to be live before we approach. Once it is, Blair makes the warm intro at Selene first.
+      </div>
+    </div>
+
+    <div class="update-item">
+      <div>
+        <div class="update-date" id="update-date-3"></div>
+        <div class="update-tag">Automation</div>
+      </div>
+      <div class="update-text">
+        Blair is setting up automated outreach using Claude Pro — the same system she uses to send 500 emails a week for her influencer clients. Once you send Blair your metrics screenshot and confirm your target client types, she'll build the prompt and you'll have outreach running hands-free. Send the screenshot as soon as you can.
+      </div>
+    </div>
+
+    <div class="update-item">
+      <div>
+        <div class="update-date" id="update-date-4"></div>
+        <div class="update-tag">Welcome</div>
+      </div>
+      <div class="update-text">
+        Welcome to Ampvox, Mea. This dashboard is updated by Blair as clients, bookings, and deals come in. Everything from pipeline to payments to your priority to-do list lives here. You've got the niche, the aesthetic, and the credibility — now we build the infrastructure around it.
+      </div>
+    </div>
+
+  </div>
+
+  <div class="dash-footer">
+    <div class="footer-logo">AMP<span>VOX</span></div>
+    <div class="footer-meta">juicymedia.co · Talent Portal · Ampvox 2026</div>
+    <div class="footer-meta">ampvox.co.uk</div>
+  </div>
+
+</div><!-- /dashboard -->
+
+<script>
+  const d = new Date();
+  const opts = { weekday:'long', year:'numeric', month:'long', day:'numeric' };
+  document.getElementById('dash-date').innerHTML = `Last updated<br>${d.toLocaleDateString('en-GB', opts).toUpperCase()}`;
+  const shortDate = d.toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' }).toUpperCase();
+  ['update-date-1','update-date-2','update-date-3','update-date-4'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = shortDate;
+  });
+
+  const PASSWORD = 'juicy2026';
+  function tryLogin() {
+    const val = document.getElementById('pw-input').value;
+    const err = document.getElementById('login-error');
+    if (val === PASSWORD) {
+      document.getElementById('login-screen').classList.add('hidden');
+      document.getElementById('dashboard').style.display = 'block';
+      sessionStorage.setItem('av_jm_auth', '1');
+    } else {
+      err.classList.add('show');
+      document.getElementById('pw-input').value = '';
+      document.getElementById('pw-input').focus();
+      setTimeout(() => err.classList.remove('show'), 3000);
+    }
+  }
+  function logout() {
+    sessionStorage.removeItem('av_jm_auth');
+    document.getElementById('login-screen').classList.remove('hidden');
+    document.getElementById('dashboard').style.display = 'none';
+    document.getElementById('pw-input').value = '';
+  }
+  document.getElementById('pw-input').addEventListener('keydown', e => {
+    if (e.key === 'Enter') tryLogin();
+  });
+  if (sessionStorage.getItem('av_jm_auth') === '1') {
+    document.getElementById('login-screen').classList.add('hidden');
+    document.getElementById('dashboard').style.display = 'block';
+  }
+</script>
+</body>
+</html>
