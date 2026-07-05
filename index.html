@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -160,13 +159,6 @@ body { background: var(--black); color: var(--white); font-family: 'DM Sans', sa
 .tag-ai      { color: #C084FC;       border-color: rgba(192,132,252,0.3); background: rgba(192,132,252,0.05); }
 .tag-admin   { color: #555;          border-color: #333;                  background: transparent; }
 
-/* ═══ UPDATES ═══ */
-.update-item { display: grid; grid-template-columns: 160px 1fr; gap: 32px; padding: 28px 0; border-bottom: 1px solid rgba(255,255,255,0.04); align-items: start; }
-.update-item:first-child { border-top: 1px solid rgba(255,255,255,0.04); }
-.update-date { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--mint); margin-bottom: 6px; }
-.update-tag { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: #333; }
-.update-text { font-size: 14px; color: #bbb; line-height: 1.85; }
-
 /* ═══ EQUIPMENT WISHLIST ═══ */
 .wish-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 2px; }
 .wish-card { background: var(--dark); padding: 22px 24px; border-top: 2px solid #222; transition: border-top-color 0.2s; }
@@ -186,6 +178,15 @@ body { background: var(--black); color: var(--white); font-family: 'DM Sans', sa
 .empty-glyph { font-family: 'Bebas Neue', sans-serif; font-size: 40px; color: #1f1f1f; letter-spacing: 2px; }
 .empty-title { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 1px; color: #2d2d2d; }
 .empty-desc { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: #2a2a2a; line-height: 2.2; }
+
+/* ═══ EMAIL FEED (auto-updated) ═══ */
+.email-feed { margin-top: 32px; border-top: 1px dashed rgba(255,255,255,0.08); padding-top: 24px; }
+.email-feed-label { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: #555; margin-bottom: 16px; }
+.email-feed-item { padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+.email-feed-sender { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 1px; color: var(--mint); margin-bottom: 4px; }
+.email-feed-subject { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+.email-feed-snippet { font-size: 12px; color: #777; line-height: 1.6; }
+.email-feed-empty { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: #333; padding: 12px 0; }
 
 /* ═══ FOOTER ═══ */
 .dash-footer { padding: 24px 48px; border-top: 1px solid rgba(78,205,196,0.08); display: flex; justify-content: space-between; align-items: center; margin-top: 40px; }
@@ -213,7 +214,6 @@ body { background: var(--black); color: var(--white); font-family: 'DM Sans', sa
 @media(max-width:600px) {
   .stats-row { grid-template-columns: 1fr; }
   .hero { padding: 32px 20px; }
-  .update-item { grid-template-columns: 1fr; gap: 8px; }
 }
 </style>
 </head>
@@ -256,17 +256,6 @@ body { background: var(--black); color: var(--white); font-family: 'DM Sans', sa
       <span class="ticker-item">Mayfair Venue Outreach — In Progress</span><span class="ticker-sep"></span>
       <span class="ticker-item">Casa Frequency — Decision Pending</span><span class="ticker-sep"></span>
       <span class="ticker-item">Napapijri — Coming Soon via Ampvox</span><span class="ticker-sep"></span>
-      <span class="ticker-item">juicymedia.co</span><span class="ticker-sep"></span>
-      <span class="ticker-item">Managed by Ampvox</span><span class="ticker-sep"></span>
-      <span class="ticker-item">Music Industry Content Creation</span><span class="ticker-sep"></span>
-      <span class="ticker-item">Photography &amp; Videography</span><span class="ticker-sep"></span>
-      <span class="ticker-item">Branding &amp; Creative Direction</span><span class="ticker-sep"></span>
-      <span class="ticker-item">Based in London</span><span class="ticker-sep"></span>
-      <span class="ticker-item">@juicymedia.co on Instagram</span><span class="ticker-sep"></span>
-      <span class="ticker-item">54 Posts · Growing Portfolio</span><span class="ticker-sep"></span>
-      <span class="ticker-item">Mayfair Venue Outreach — In Progress</span><span class="ticker-sep"></span>
-      <span class="ticker-item">Casa Frequency — Decision Pending</span><span class="ticker-sep"></span>
-      <span class="ticker-item">Napapijri — Coming Soon via Ampvox</span><span class="ticker-sep"></span>
     </div>
   </div>
 
@@ -276,7 +265,7 @@ body { background: var(--black); color: var(--white); font-family: 'DM Sans', sa
       <div class="hero-eyebrow">Your Business Dashboard</div>
       <div class="hero-name">JUICY<br><span>MEDIA</span></div>
       <div class="hero-rule"></div>
-      <div class="hero-desc">Music industry photographer and videographer specialising in artists, live events, and brand content. Based in London. Managed by Ampvox. This is your central hub for clients, bookings, revenue, and everything your business needs to grow.</div>
+      <div class="hero-desc">Music industry photographer and videographer specialising in artists, live events, and brand content. Based in London. This is your central hub for clients, bookings, revenue, and everything your business needs to grow.</div>
       <div class="hero-handle">@juicymedia.co &nbsp;·&nbsp; juicymedia.co &nbsp;·&nbsp; Music · Photography · Videography · Branding</div>
     </div>
     <div class="hero-date" id="dash-date"></div>
@@ -322,9 +311,9 @@ body { background: var(--black); color: var(--white); font-family: 'DM Sans', sa
       <div class="stat-sub">Casa Frequency — awaiting response</div>
     </div>
     <div class="stat-block">
-      <div class="stat-label">Revenue — 2026</div>
-      <div class="stat-value">£0</div>
-      <div class="stat-sub">Just joined Ampvox</div>
+      <div class="stat-label">Business Emails Tracked</div>
+      <div class="stat-value" id="stat-email-count">—</div>
+      <div class="stat-sub" id="stat-email-updated">Not yet synced</div>
     </div>
   </div>
 
@@ -347,7 +336,7 @@ body { background: var(--black); color: var(--white); font-family: 'DM Sans', sa
             </div>
             <div>
               <div class="deal-label">Next Step</div>
-              <div class="deal-value">Send one final direct message asking for their content budget. If no answer: pull out. Tony DJ's independently — he either finds his own way or pays separately for his set.</div>
+              <div class="deal-value">Send one final direct message asking for their content budget. If no answer: pull out.</div>
             </div>
           </div>
         </div>
@@ -366,11 +355,11 @@ body { background: var(--black); color: var(--white); font-family: 'DM Sans', sa
           <div class="deal-meta">
             <div>
               <div class="deal-label">Opportunity</div>
-              <div class="deal-value">High-profile Mayfair club. Filming allowed. Blair has the direct number of the Director. Major artists perform regularly.</div>
+              <div class="deal-value">High-profile Mayfair club. Filming allowed. Major artists perform regularly.</div>
             </div>
             <div>
               <div class="deal-label">Next Step</div>
-              <div class="deal-value">Website and media kit must be live first. Then Blair makes the warm intro. Target: regular content partner at premium rate.</div>
+              <div class="deal-value">Website and media kit must be live first, then warm intro.</div>
             </div>
           </div>
         </div>
@@ -389,11 +378,11 @@ body { background: var(--black); color: var(--white); font-family: 'DM Sans', sa
           <div class="deal-meta">
             <div>
               <div class="deal-label">Opportunity</div>
-              <div class="deal-value">Flagship Mayfair venue. No filming for general guests — media access negotiable. Love Island regulars, 50 Cent, Travis Scott, Sexyy Red have all appeared.</div>
+              <div class="deal-value">Flagship Mayfair venue. No filming for general guests — media access negotiable.</div>
             </div>
             <div>
               <div class="deal-label">Next Step</div>
-              <div class="deal-value">Approach via pitch deck once website is live. Negotiate media accreditation as venue content creator.</div>
+              <div class="deal-value">Approach via pitch deck once website is live.</div>
             </div>
           </div>
         </div>
@@ -412,11 +401,11 @@ body { background: var(--black); color: var(--white); font-family: 'DM Sans', sa
           <div class="deal-meta">
             <div>
               <div class="deal-label">Opportunity</div>
-              <div class="deal-value">Strong theatrical / circus aesthetic. Great visual content potential. Blair connected. Filming allowed.</div>
+              <div class="deal-value">Strong theatrical / circus aesthetic. Great visual content potential. Filming allowed.</div>
             </div>
             <div>
               <div class="deal-label">Next Step</div>
-              <div class="deal-value">Approach alongside Selene once website and pitch deck are ready.</div>
+              <div class="deal-value">Approach once website and pitch deck are ready.</div>
             </div>
           </div>
         </div>
@@ -426,6 +415,10 @@ body { background: var(--black); color: var(--white); font-family: 'DM Sans', sa
         </div>
       </div>
 
+    </div>
+    <div class="email-feed" id="pipeline-email-feed">
+      <div class="email-feed-label">Auto-synced from Gmail</div>
+      <div class="email-feed-empty">No synced data yet — runs daily once automation is connected.</div>
     </div>
   </div>
 
@@ -439,25 +432,16 @@ body { background: var(--black); color: var(--white); font-family: 'DM Sans', sa
         <div class="timeline-date urgent">NOW<span>URGENT</span></div>
         <div>
           <div class="timeline-title">Buy Two Secondhand Hard Drives</div>
-          <div class="timeline-desc">No storage = no Photoshop. This is blocking editing work right now. Get two 1TB drives (plan A + plan B). Secondhand is fine. Do this week.</div>
+          <div class="timeline-desc">No storage = no Photoshop. Get two 1TB drives. Secondhand is fine. Do this week.</div>
         </div>
         <div class="timeline-pill urgent">Blocking</div>
-      </div>
-
-      <div class="timeline-item">
-        <div class="timeline-date urgent">NOW<span>THIS WEEK</span></div>
-        <div>
-          <div class="timeline-title">Fix Instagram Bio &amp; Broken Link</div>
-          <div class="timeline-desc">Update age (24), replace broken TikTok link with a booking CTA, move music industry niche to line 1. Takes 5 minutes. Do it today.</div>
-        </div>
-        <div class="timeline-pill urgent">Quick Win</div>
       </div>
 
       <div class="timeline-item">
         <div class="timeline-date">26 JUN<span>2026</span></div>
         <div>
           <div class="timeline-title">Casa Frequency — Glasshouse Event</div>
-          <div class="timeline-desc">First Casa event. Decision needed before this date: get a budget confirmation or pull out. Don't turn up unpaid.</div>
+          <div class="timeline-desc">Decision needed before this date: get a budget confirmation or pull out.</div>
         </div>
         <div class="timeline-pill urgent">Needs Decision</div>
       </div>
@@ -466,7 +450,7 @@ body { background: var(--black); color: var(--white); font-family: 'DM Sans', sa
         <div class="timeline-date">4 JUL<span>2026</span></div>
         <div>
           <div class="timeline-title">Casa Frequency — July Event</div>
-          <div class="timeline-desc">J-Line and DJ Antics walkthrough video. Payment confirmed or not attending. Tony handles his own travel if no deal.</div>
+          <div class="timeline-desc">J-Line and DJ Antics walkthrough video. Payment confirmed or not attending.</div>
         </div>
         <div class="timeline-pill">TBC</div>
       </div>
@@ -475,7 +459,7 @@ body { background: var(--black); color: var(--white); font-family: 'DM Sans', sa
         <div class="timeline-date">31 JUL<span>2026</span></div>
         <div>
           <div class="timeline-title">Casa Frequency — Main Event</div>
-          <div class="timeline-desc">J-Line headlining. Highest-profile of the three dates. Maximum leverage to negotiate.</div>
+          <div class="timeline-desc">J-Line headlining. Highest-profile of the three dates.</div>
         </div>
         <div class="timeline-pill">TBC</div>
       </div>
@@ -484,20 +468,15 @@ body { background: var(--black); color: var(--white); font-family: 'DM Sans', sa
         <div class="timeline-date">TBC<span>SOON</span></div>
         <div>
           <div class="timeline-title">Website Launch</div>
-          <div class="timeline-desc">Portfolio site built by Blair once assets are shared. Unlocks Mayfair venue pitches and justifies premium pricing.</div>
+          <div class="timeline-desc">Portfolio site unlocks Mayfair venue pitches and justifies premium pricing.</div>
         </div>
         <div class="timeline-pill active">In Progress</div>
       </div>
 
-      <div class="timeline-item">
-        <div class="timeline-date">TBC<span>FESTIVAL SEASON</span></div>
-        <div>
-          <div class="timeline-title">Brighton Pride — Media Pass</div>
-          <div class="timeline-desc">Applied for media accreditation. Mariah Carey, Paris Hilton headlining. If this comes through it's a major portfolio piece.</div>
-        </div>
-        <div class="timeline-pill">Awaiting Response</div>
-      </div>
-
+    </div>
+    <div class="email-feed" id="timeline-email-feed">
+      <div class="email-feed-label">Auto-synced from Gmail</div>
+      <div class="email-feed-empty">No synced data yet — runs daily once automation is connected.</div>
     </div>
   </div>
 
@@ -518,6 +497,10 @@ body { background: var(--black); color: var(--white); font-family: 'DM Sans', sa
       <div class="empty-title">No Paid Jobs Yet</div>
       <div class="empty-desc">First bookings will appear here. Outreach starts now.</div>
     </div>
+    <div class="email-feed" id="earnings-email-feed">
+      <div class="email-feed-label">Auto-synced from Gmail</div>
+      <div class="email-feed-empty">No synced data yet — runs daily once automation is connected.</div>
+    </div>
   </div>
 
   <!-- ACTION ITEMS -->
@@ -530,7 +513,7 @@ body { background: var(--black); color: var(--white); font-family: 'DM Sans', sa
         <div class="action-num">1</div>
         <div class="action-body">
           <div class="action-title">Buy Two Secondhand Hard Drives</div>
-          <div class="action-detail">Blocking Photoshop right now. 1TB each, secondhand is fine. Do this week — everything else in editing depends on it.</div>
+          <div class="action-detail">Blocking Photoshop right now. 1TB each, secondhand is fine. Do this week.</div>
         </div>
         <div class="action-tag-col"><span class="action-tag tag-urgent">Blocking</span></div>
       </div>
@@ -539,7 +522,7 @@ body { background: var(--black); color: var(--white); font-family: 'DM Sans', sa
         <div class="action-num">2</div>
         <div class="action-body">
           <div class="action-title">Fix Instagram Bio</div>
-          <div class="action-detail">Update age to 24. Replace broken link with booking CTA. Move music industry niche to line 1. Add Story Highlights: Portfolio, Packages, Testimonials, BTS.</div>
+          <div class="action-detail">Update age, replace broken link with booking CTA, move music industry niche to line 1.</div>
         </div>
         <div class="action-tag-col"><span class="action-tag tag-quick">Quick Win</span></div>
       </div>
@@ -548,7 +531,7 @@ body { background: var(--black); color: var(--white); font-family: 'DM Sans', sa
         <div class="action-num">3</div>
         <div class="action-body">
           <div class="action-title">Resolve Casa Frequency</div>
-          <div class="action-detail">One final message: "What's your content budget per event?" If no answer: pull out. Don't attend another unpaid weekend event.</div>
+          <div class="action-detail">One final message on content budget. If no answer: pull out.</div>
         </div>
         <div class="action-tag-col"><span class="action-tag tag-urgent">Urgent</span></div>
       </div>
@@ -556,64 +539,19 @@ body { background: var(--black); color: var(--white); font-family: 'DM Sans', sa
       <div class="action-item">
         <div class="action-num">4</div>
         <div class="action-body">
-          <div class="action-title">Send Blair Your Metrics Screenshot</div>
-          <div class="action-detail">Instagram + TikTok stats screenshot. Blair uses this to build the automated outreach prompt that sends 500 emails a week for you.</div>
-        </div>
-        <div class="action-tag-col"><span class="action-tag tag-ai">AI Outreach</span></div>
-      </div>
-
-      <div class="action-item">
-        <div class="action-num">5</div>
-        <div class="action-body">
-          <div class="action-title">Share Assets with Blair for Website Build</div>
-          <div class="action-detail">Best photos, video links, any existing copy. Blair builds the portfolio site once she has the material. Site unlocks the Mayfair pitch.</div>
+          <div class="action-title">Share Assets for Website Build</div>
+          <div class="action-detail">Best photos, video links, any existing copy. Site unlocks the Mayfair pitch.</div>
         </div>
         <div class="action-tag-col"><span class="action-tag tag-build">Build</span></div>
       </div>
 
       <div class="action-item">
-        <div class="action-num">6</div>
-        <div class="action-body">
-          <div class="action-title">Book Photoshop Day with French</div>
-          <div class="action-detail">Blair reaching out to arrange. Shadow French for a day. Ask questions as he works. Better than any YouTube tutorial for this.</div>
-        </div>
-        <div class="action-tag-col"><span class="action-tag tag-build">Skills</span></div>
-      </div>
-
-      <div class="action-item">
-        <div class="action-num">7</div>
-        <div class="action-body">
-          <div class="action-title">Reach Out to Adobe for Free Subscription</div>
-          <div class="action-detail">Easiest brand deal on the list. No physical product. Offer to tag in content and write a case study. Blair drafting the pitch.</div>
-        </div>
-        <div class="action-tag-col"><span class="action-tag tag-outreach">Outreach</span></div>
-      </div>
-
-      <div class="action-item">
-        <div class="action-num">8</div>
-        <div class="action-body">
-          <div class="action-title">Sign Up for Claude Pro</div>
-          <div class="action-detail">£15/month. Unlocks computer-use automation. 500 outreach emails a week, written and drafted by AI, no copy-pasting.</div>
-        </div>
-        <div class="action-tag-col"><span class="action-tag tag-ai">AI</span></div>
-      </div>
-
-      <div class="action-item">
-        <div class="action-num">9</div>
+        <div class="action-num">5</div>
         <div class="action-body">
           <div class="action-title">Start Posting on LinkedIn</div>
-          <div class="action-detail">Untapped B2B channel for venue and event brand clients. Even repurposing Instagram content is a start. Blair to advise on angle.</div>
+          <div class="action-detail">Untapped B2B channel for venue and event brand clients.</div>
         </div>
         <div class="action-tag-col"><span class="action-tag tag-outreach">Content</span></div>
-      </div>
-
-      <div class="action-item">
-        <div class="action-num">10</div>
-        <div class="action-body">
-          <div class="action-title">Mayfair Warm Intro — Selene Director</div>
-          <div class="action-detail">Blair has the director's direct number. Intro happens after website is live. Do not approach before — first impressions at this level matter.</div>
-        </div>
-        <div class="action-tag-col"><span class="action-tag tag-outreach">Networking</span></div>
       </div>
 
     </div>
@@ -623,7 +561,7 @@ body { background: var(--black); color: var(--white); font-family: 'DM Sans', sa
   <div class="section">
     <div class="section-label">05 — Equipment &amp; Tools</div>
     <div class="section-title">THE WISHLIST.</div>
-    <p style="font-size:13px;color:var(--grey);margin-bottom:24px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;line-height:2;">Approach with brand outreach first — sponsored loans, product placement, free trials — before buying anything.</p>
+    <p style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;line-height:2;color:var(--grey);margin-bottom:24px;">Approach with brand outreach first — sponsored loans, product placement, free trials — before buying anything.</p>
     <div class="wish-grid">
 
       <div class="wish-card priority-urgent">
@@ -636,7 +574,7 @@ body { background: var(--black); color: var(--white); font-family: 'DM Sans', sa
       <div class="wish-card priority-high">
         <div class="wish-icon">LENS</div>
         <div class="wish-name">Upgrade Lens</div>
-        <div class="wish-note">Finance via Sean once camera loan finishes (1 month). High priority for quality step-up.</div>
+        <div class="wish-note">High priority for quality step-up.</div>
         <div class="wish-priority">🟠 High Priority</div>
       </div>
 
@@ -650,120 +588,31 @@ body { background: var(--black); color: var(--white); font-family: 'DM Sans', sa
       <div class="wish-card priority-high">
         <div class="wish-icon">MBP</div>
         <div class="wish-name">MacBook</div>
-        <div class="wish-note">Needed for a proper editing workflow. Current setup limits what's possible in post.</div>
+        <div class="wish-note">Needed for a proper editing workflow.</div>
         <div class="wish-priority">🟠 High Priority</div>
       </div>
 
       <div class="wish-card">
         <div class="wish-icon">AI</div>
         <div class="wish-name">Adobe CC</div>
-        <div class="wish-note">Already have access. Reach out to Adobe for a free/discounted deal in exchange for product placement and case study.</div>
+        <div class="wish-note">Reach out to Adobe for a free/discounted deal in exchange for product placement.</div>
         <div class="wish-priority">Easiest Brand Deal</div>
-      </div>
-
-      <div class="wish-card">
-        <div class="wish-icon">AUD</div>
-        <div class="wish-name">Audio Extractor</div>
-        <div class="wish-note">Improves event video quality significantly. Try brand outreach before purchasing.</div>
-        <div class="wish-priority">Medium Priority</div>
-      </div>
-
-      <div class="wish-card">
-        <div class="wish-icon">SCR</div>
-        <div class="wish-name">Camera Screen</div>
-        <div class="wish-note">Flip monitor that attaches to camera. Helpful for solo shooting setups.</div>
-        <div class="wish-priority">Medium Priority</div>
       </div>
 
       <div class="wish-card">
         <div class="wish-icon">DJI</div>
         <div class="wish-name">DJI Osmo Pocket 3</div>
-        <div class="wish-note">Compact, gimbal-stabilised. Excellent for B-roll and event coverage. Reach out to DJI.</div>
+        <div class="wish-note">Compact, gimbal-stabilised. Excellent for B-roll and event coverage.</div>
         <div class="wish-priority">Medium Priority</div>
       </div>
 
-      <div class="wish-card">
-        <div class="wish-icon">BAG</div>
-        <div class="wish-name">Bags &amp; Cases</div>
-        <div class="wish-note">Professional kit transport. Looks the part when showing up to premium venues.</div>
-        <div class="wish-priority">Medium Priority</div>
-      </div>
-
-      <div class="wish-card">
-        <div class="wish-icon">BAT</div>
-        <div class="wish-name">Battery Pack</div>
-        <div class="wish-note">Standard event kit. Never miss a shot to a dead camera.</div>
-        <div class="wish-priority">Medium Priority</div>
-      </div>
-
-      <div class="wish-card">
-        <div class="wish-icon">META</div>
-        <div class="wish-name">Ray-Ban Meta Glasses</div>
-        <div class="wish-note">Hands-free capture. Good for BTS and POV content at events.</div>
-        <div class="wish-priority">Nice to Have</div>
-      </div>
-
-      <div class="wish-card">
-        <div class="wish-icon">CHAIR</div>
-        <div class="wish-name">Desk Chair</div>
-        <div class="wish-note">Health and ergonomics for long editing sessions. Worth sorting properly.</div>
-        <div class="wish-priority">Nice to Have</div>
-      </div>
-
     </div>
-  </div>
-
-  <!-- MANAGER UPDATES -->
-  <div class="section">
-    <div class="section-label">06 — Manager Updates</div>
-    <div class="section-title">FROM YOUR TEAM.</div>
-
-    <div class="update-item">
-      <div>
-        <div class="update-date" id="update-date-1"></div>
-        <div class="update-tag">Casa Frequency</div>
-      </div>
-      <div class="update-text">
-        You've followed up twice on payment. They re-sent the same message ignoring your budget question — classic stall tactic. You need to send one final direct ask and then pull out if there's no answer. You hold the content AND the DJ relationship. It's a lose-lose for them if they don't pay up. Two years of free work is enough.
-      </div>
-    </div>
-
-    <div class="update-item">
-      <div>
-        <div class="update-date" id="update-date-2"></div>
-        <div class="update-tag">Mayfair Strategy</div>
-      </div>
-      <div class="update-text">
-        Blair has personal connections at Selene (direct line to the Director), Tape, and Cirque. These are premium rate opportunities — artists like Travis Scott, 50 Cent, and Sexyy Red perform here regularly. Website needs to be live before we approach. Once it is, Blair makes the warm intro at Selene first.
-      </div>
-    </div>
-
-    <div class="update-item">
-      <div>
-        <div class="update-date" id="update-date-3"></div>
-        <div class="update-tag">Automation</div>
-      </div>
-      <div class="update-text">
-        Blair is setting up automated outreach using Claude Pro — the same system she uses to send 500 emails a week for her influencer clients. Once you send Blair your metrics screenshot and confirm your target client types, she'll build the prompt and you'll have outreach running hands-free. Send the screenshot as soon as you can.
-      </div>
-    </div>
-
-    <div class="update-item">
-      <div>
-        <div class="update-date" id="update-date-4"></div>
-        <div class="update-tag">Welcome</div>
-      </div>
-      <div class="update-text">
-        Welcome to Ampvox, Mea. This dashboard is updated by Blair as clients, bookings, and deals come in. Everything from pipeline to payments to your priority to-do list lives here. You've got the niche, the aesthetic, and the credibility — now we build the infrastructure around it.
-      </div>
-    </div>
-
   </div>
 
   <div class="dash-footer">
     <div class="footer-logo">AMP<span>VOX</span></div>
-    <div class="footer-meta">juicymedia.co · Talent Portal · Ampvox 2026</div>
-    <div class="footer-meta">ampvox.co.uk</div>
+    <div class="footer-meta">juicymedia.co · Talent Portal · 2026</div>
+    <div class="footer-meta">Auto-synced daily from Gmail</div>
   </div>
 
 </div><!-- /dashboard -->
@@ -772,11 +621,6 @@ body { background: var(--black); color: var(--white); font-family: 'DM Sans', sa
   const d = new Date();
   const opts = { weekday:'long', year:'numeric', month:'long', day:'numeric' };
   document.getElementById('dash-date').innerHTML = `Last updated<br>${d.toLocaleDateString('en-GB', opts).toUpperCase()}`;
-  const shortDate = d.toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' }).toUpperCase();
-  ['update-date-1','update-date-2','update-date-3','update-date-4'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.textContent = shortDate;
-  });
 
   const PASSWORD = 'juicy2026';
   function tryLogin() {
@@ -806,6 +650,52 @@ body { background: var(--black); color: var(--white); font-family: 'DM Sans', sa
     document.getElementById('login-screen').classList.add('hidden');
     document.getElementById('dashboard').style.display = 'block';
   }
+
+  // ═══ AUTO-SYNCED EMAIL DATA ═══
+  // Reads data.json, written daily by the GitHub Action that pulls
+  // filtered business emails from Gmail (see scripts/fetch_emails.py)
+  function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str || '';
+    return div.innerHTML;
+  }
+
+  function renderFeed(elId, items) {
+    const el = document.getElementById(elId);
+    if (!items || items.length === 0) {
+      el.innerHTML = '<div class="email-feed-label">Auto-synced from Gmail</div><div class="email-feed-empty">Nothing new here yet.</div>';
+      return;
+    }
+    let html = '<div class="email-feed-label">Auto-synced from Gmail</div>';
+    items.slice(0, 8).forEach(item => {
+      html += `
+        <div class="email-feed-item">
+          <div class="email-feed-sender">${escapeHtml(item.sender)} · ${escapeHtml(item.date)}</div>
+          <div class="email-feed-subject">${escapeHtml(item.subject)}</div>
+          <div class="email-feed-snippet">${escapeHtml(item.snippet)}</div>
+        </div>`;
+    });
+    el.innerHTML = html;
+  }
+
+  fetch('data.json', { cache: 'no-store' })
+    .then(r => r.ok ? r.json() : Promise.reject())
+    .then(data => {
+      renderFeed('pipeline-email-feed', data.pipeline);
+      renderFeed('timeline-email-feed', data.timeline);
+      renderFeed('earnings-email-feed', data.earnings);
+
+      const total = data.stats?.total_business_emails ?? 0;
+      document.getElementById('stat-email-count').textContent = total;
+      if (data.generated_at) {
+        const gen = new Date(data.generated_at);
+        document.getElementById('stat-email-updated').textContent =
+          'Synced ' + gen.toLocaleDateString('en-GB', { day:'numeric', month:'short' });
+      }
+    })
+    .catch(() => {
+      // data.json not present yet (automation not wired up) — leave defaults
+    });
 </script>
 </body>
 </html>
